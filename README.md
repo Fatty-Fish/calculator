@@ -12,5 +12,20 @@ HTML + CSS + JS
 此方法参数必须是原始字符串，且字符串是正确的表达式格式。
 
 ##### 布局
-所有的按钮都是通过 js 循环出来的，计算器水平居中，如图：
-<img src = "https://github.com/Fatty-Fish/calculator/raw/master/images/calculator.png" border = "1px solid black" height = "200px">
+所有的按钮都是通过 js 循环出来的，计算器水平居中，如图：</br>
+<img src = "https://github.com/Fatty-Fish/calculator/raw/master/images/calculator.png" border = "1px solid black" height = "200px"/>
+
+##### 逻辑
+页面主要 js 文件是 index.js ，里面引入要用到的自己封装的 js 模块，为防止变量污染，每个模块被立即执行函数封闭，并在 window 对象下注册 calculator 对象，模块里的方法属性通过 window.calculator 保存到外部供需要的文件使用。计算功能主要依靠 count.js ，能传入count的字符串参数，基本上是符合正确的表达式格式。count 首先区分出有括号运算，加，减，乘，除。加减乘除很好思考，就是一直递归使用 count ，直到 count 返回的是纯数字，然后 for 循环 += 、 -= 、 /= 、 \*= 。如果有括号就会麻烦一点，最开始只考虑了并列括号的情况：（1+1）+（1-1）。过了几天，发现还可以（1-（2 + 3）+ 4）这种情况，还有两种情况都出现。有点为难到底该怎样选出括号里的运算，但整体思路是有的：选出最里面括号里的简单运算，在把括号和运算替换为运算结果，比如
+```bash
+str = 1+2*(2+1)+(1+(1+2));
+首先选出：(2+1) 和 (1+2)
+通过递归算出结果 3，3
+然后替换，str = 1+2*3+(1+3)
+然后再把 str 扔进 count 函数，重复上面的操作。
+```
+难在把嵌套括号里面的运算出来再计算，和一个正则兼顾并列和嵌套括号。
+通过分析打印处理后的 str ，和正则筛选，最后的count函数，有括号的情况下，会先在 ( 前加空格，在 ) 后加空格。然后再 split by 空格。再放入count函数，重复。
+这样一来，就不用考虑是并列括号还是嵌套括号了（考虑了也找不到合适的正则区分出里面的运算），只要是带括号的待运算字符串传入了count函数，就会被标记括号位置，选出其中的运算，并递归。
+
+#### Whatever is, is right!
