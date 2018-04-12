@@ -13,4 +13,4 @@ HTML + CSS + JS
 
 ##### 布局
 所有的按钮都是通过 js 循环出来的，计算器水平居中，如图：
-<img src = "https://github.com/Fatty-Fish/calculator/raw/master/images/calculator.png"/>
+<img src = "https://github.com/Fatty-Fish/calculator/raw/master/images/calculator.png" border = "1px solid black" height = "200px">
